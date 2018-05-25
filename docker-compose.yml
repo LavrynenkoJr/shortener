@@ -1,0 +1,35 @@
+version: '2'
+services:
+
+  web:
+    image: lavrynenko/shortener:1.0.0
+
+    ports:
+     - 8070:8070
+    depends_on:
+    - db
+    environment:
+    - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/shortener
+    - SPRING_DATASOURCE_USERNAME=shortener
+    - SPRING_DATASOURCE_PASSWORD=shortener
+
+  db:
+    image: mysql:5.7
+    ports:
+    - 3306:3306
+    environment:
+      MYSQL_DATABASE: shortener
+      MYSQL_USER: shortener
+      MYSQL_PASSWORD: shortener
+      MYSQL_ROOT_PASSWORD: root
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+    - db:db
+    ports:
+    - 8000:80
+    environment:
+      MYSQL_USER: shortener
+      MYSQL_PASSWORD: shortener
+      MYSQL_ROOT_PASSWORD: root
